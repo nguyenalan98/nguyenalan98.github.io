@@ -1,9 +1,171 @@
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="./draw.js"></script>
+  <script src="./animate.js"></script>
+  <title>Wines and Vines</title>
+  <style>
+    h1{
+        text-align: center;
+        font: 35px avenir, serif;
+        color: green;
+        margin-top:20px;
+        margin-bottom:0px;
+    }
+    p{
+        text-align: center;
+        font: 20px avenir, serif;
+        color: purple;
+    }
 
-  </body>
+    .grapeLabelsRight{
+        text-anchor:end;
+        font: 20px avenir, serif;
+        fill:rgb(99, 54, 10);
+    }
+    .grapeLabelsLeft{
+        text-anchor:start;
+        font: 20px avenir, serif;
+        fill:rgb(99, 54, 10);
+    }
+    .scrollDigitTriplet {
+        font: 70px avenir, serif;
+    }
+    .scrollDigitTwin {
+        font: 100px avenir, serif;
+    }
+    .scrollDigit{
+        font: 90px avenir, serif;
+    }
+    .labelText{
+        font: 24px avenir,serif;
+        text-anchor: middle;
+    }
+    .name {
+    width: 400px;
+    }
+    #grapes {
+    float:right;
+    }
+    .varietalHeaderText{
+        fill: green;
+        font: 35px avenir, serif;
+        text-anchor: middle;
+    }
+    .happinessRatingText{
+        font: bold 20px avenir, serif;
+        fill:green;
+    }
+
+    #description{
+      width:80%;
+      margin-left:10%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1 id="title">Wines, Vines, and Happiness</h1>
+    <p id="description"> Our project attempts to visualize the happiness, quality of, and consumption of wine in the top ten wine producing countries.
+          We use a grape vine and small clusters to order the countries in order of volume of wine production.
+          Selecting a country will show the happiness rating, top ten varietals by average rating in that country, and the yearly per capita servings of wine.
+          While we hypothesized that the countries that produce the best wine and have the highest consumption
+          would be rated higher in happiness than those of lower quality production and quanity of consumption there isn't an obvious relation between the two.
+    </p>
+  <div id="displayBox" style="text-align:center;">
+    <svg width="325" height="720" id="grapevine" style="display:inline-block;">
+            <path d ="M 65 33.8
+                      L 65 715"
+                      stroke="rgb(99, 54, 10)" stroke-width="11.7" fill="none" class="stick"/>
+
+            <path d = "M 65 715
+                       C 29.9 643.5 117 617.5 58.5 559
+                       C 19.5 487.5 135 487.5 58.5 422.5"
+                       stroke="green" stroke-width="7.8" fill="none" class="vine"/>
+
+            <path d = "M 59.15 423.8
+                      C 19.5 357.5 117 325 58.5 260
+                      C 19.5 195 117 162.5 59.15 96.525"
+                      stroke ="green" stroke-width="6.5" fill="none" class="vine"/>
+
+            <path d = "M 60.775 98.8
+                       C 6.5 26 97.5 26 84.5 53.3"
+                       stroke="green" stroke-width="5.2" fill="none" class="vine"/>
+
+            <path d = "M 84.5 50.7
+                       C 84.5 55.9 88.4 55.9 88.4 52"
+                       stroke="green" stroke-width="4.55" fill="none" class="tip"/>
+
+            <path d = "M 58.5 676
+                       C 58.5 676 57.2 611 35.1 650"
+                       stroke="green" stroke-width="3.25" fill="none" class ="branch"/>
+
+            <path d = "M 75.4 617.5
+                       C 71.5 611 91 559 104 585"
+                       stroke="green" stroke-width="3.25" fill="none" class ="branch"/>
+
+            <path d = "M 49.4 539.5
+                       C 49.4 546 48.1 481 26 520"
+                       stroke="green" stroke-width="3.25" fill="none" class ="branch"/>
+
+            <path d = "M 62.4 494
+                       C 62.4 494 91 455 97.5 481"
+                       stroke="green" stroke-width="3.25" fill="none" class ="branch"/>
+
+            <path d = "M 58.5 425.1
+                       C 58.5 425.1 49.4 390 31.2 422.5"
+                       stroke="green" stroke-width="3.25" fill="none" class ="branch"/>
+
+            <path d = "M 66.3 338
+                       C 66.3 338 91 312 91 338"
+                       stroke="green" stroke-width="3.25" fill="none" class ="branch"/>
+
+            <path d = "M 58.5 260
+                       C 58.5 260 45.5 234 32.5 260"
+                       stroke="green" stroke-width="3.25" fill="none" class ="branch"/>
+
+            <path d = "M 66.3 182
+                       C 66.3 182 91 156 91 182"
+                       stroke="green" stroke-width="3.25" fill="none" class ="branch"/>
+
+            <path d = "M 57.2 93.6
+                       C 57.2 93.6 39 67.6 32.5 97.5"
+                       stroke="green" stroke-width="2.6" fill="none" class ="branch"/>
+    </svg>
+
+    <svg id="varietalContainer" height=750 width=500 style="display:inline-block;">
+        <svg id="grapes" x=0 y=180 height=700 width=100%>
+        </svg>
+        <svg id="happiness" x=0 y=50 height=150 width=100% style="display:inline-block;">
+            <path></path>
+        </svg>
+    </svg>
+
+    <svg width="325" height="750" id="bottle">
+        <path d = "M 0 665 C 0 665 0 700 20 700 M 18 700
+                   l 123 0 M 160 665 C 160 665 160 700 140 700 M 00 665
+                   l 0 -350 C 00 325 00 275 55 250 l 0 -100 l -3 -1 l 0 -20
+                   l 3 -1 l 3 -1 l 0 -10 M 160 665 l 0 -350 C 160 325 160 275 105 250 l 0 -100
+                   l 3 -1 l 0 -20 l -3 -1 l -3 -1 l 0 -10 l -45 0"
+                   stroke="black" stroke-width="3.25" fill="none" class ="branch"/>
+    </svg>
+
+</div>
+
+<script>
+ const buildPage = async () => {
+    drawVine();
+    drawSlider();
+    drawVarietalCluster();
+    drawBottle();
+    const data = await d3.json("./data/wine_data_objects.json");
+    animate(data);
+ }
+ buildPage();
+</script>
+
 </html>

@@ -1,0 +1,6 @@
+Here we provide the links to all of the original, unchanged datasets since they were
+far too big to use without editing and deleting of information that we didn't require
+
+https://www.kaggle.com/zynicide/wine-reviews#winemag-data-130k-v2.json
+https://www.kaggle.com/zynicide/wine-reviews#winemag-data_first150k.csv
+https://www.kaggle.com/unsdsn/world-happiness
